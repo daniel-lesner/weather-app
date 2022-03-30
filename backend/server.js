@@ -3,7 +3,7 @@ const dotenv = require('dotenv').config();
 const cors = require('cors');
 const { getCitiesArray, getCityWeather } = require('./controllers.js');
 
-const PORT = process.env.WEATHER_APP_PORT;
+const PORT = process.env.WEATHER_APP_PORT || 3000;
 
 const app = express();
 app.use(cors());
