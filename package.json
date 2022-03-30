@@ -4,9 +4,12 @@
   "description": "Simple App for getting weather information based on location",
   "main": "server.js",
   "scripts": {
-    "start": "node backend/server.js",
+    "start": "npm install && node backend/server.js",
     "server": "nodemon backend/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-postbuild": "npm run heroku-install && npm run heroku-build",
+    "heroku-install": "cd frontend && npm install",
+    "heroku-build": "cd frontend && npm run build"
   },
   "author": "Daniel Lesner",
   "license": "ISC",

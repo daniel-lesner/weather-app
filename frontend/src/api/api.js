@@ -1,10 +1,9 @@
 import axios from 'axios';
+const URI = process.env.REACT_APP_SERVER_URI || 'http://localhost:3000';
 
 export const getCitiesArray = async (userSearchTerm) => {
   try {
-    const resp = await axios.get(
-      `http://localhost:3000/api/cities/${userSearchTerm}`
-    );
+    const resp = await axios.get(`${URI}/api/cities/${userSearchTerm}`);
 
     return resp.data;
   } catch (err) {
@@ -15,7 +14,7 @@ export const getCitiesArray = async (userSearchTerm) => {
 export const getCityWeather = async (cityLatitude, cityLongitude) => {
   try {
     const resp = await axios.get(
-      `http://localhost:3000/api/weather/${cityLatitude}&${cityLongitude}`
+      `${URI}/api/weather/${cityLatitude}&${cityLongitude}`
     );
 
     return resp.data;
