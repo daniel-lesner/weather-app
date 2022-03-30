@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Paper,
   InputBase,
@@ -11,9 +11,9 @@ import {
   Box,
   Fade,
 } from '@mui/material';
-import { getCitiesArray, getCityWeather } from '../api/api';
 import SearchIcon from '@mui/icons-material/Search';
 import { makeStyles } from '@mui/styles';
+import { getCitiesArray, getCityWeather } from '../api/api';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,36 +29,36 @@ const SearchBar = ({ setCityData }) => {
   const classes = useStyles();
 
   const [citiesArray, setCitiesArray] = useState([]);
-
   const [formValue, setFormValue] = useState('');
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   const onFormSubmit = async (event) => {
     event.preventDefault();
     if (!formValue) return;
-    handleOpen();
     setCitiesArray(await getCitiesArray(formValue));
+    handleOpen();
   };
 
   const handleCityChoice = async (cityObject) => {
+    setCityData(await getCityWeather(cityObject.lat, cityObject.lon));
     handleClose();
     setFormValue('');
-    setCityData(await getCityWeather(cityObject.lat, cityObject.lon));
   };
 
-  const handleChange = (event) => {
-    setFormValue(event.target.value);
-  };
-
-  useEffect(() => {}, [citiesArray]);
+  const handleChange = (event) => setFormValue(event.target.value);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   return (
     <div className={classes.root}>
       <Paper
         component="form"
-        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
+        sx={{
+          p: '2px 4px',
+          display: 'flex',
+          alignItems: 'center',
+          width: 'min(70vh, 70vw)',
+        }}
         onSubmit={onFormSubmit}
       >
         <InputBase
@@ -96,19 +96,18 @@ const SearchBar = ({ setCityData }) => {
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              width: 400,
+              width: 'max(30vh, 30vw)',
               bgcolor: 'background.paper',
-              // border: '2px solid #000',
               boxShadow: 24,
               p: 4,
             }}
           >
             <Typography id="transition-modal-title" variant="h6" component="h2">
               {citiesArray.length
-                ? 'Please select your desired city'
+                ? 'Please select one of the cities below'
                 : 'Oups, could not find the city, please try again!'}
             </Typography>
-            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
+            <div id="transition-modal-description" sx={{ mt: 2 }}>
               <Grid className={classes.citiesListcontainer}>
                 {citiesArray &&
                   citiesArray.map((item) => {
@@ -124,7 +123,7 @@ const SearchBar = ({ setCityData }) => {
                     );
                   })}
               </Grid>
-            </Typography>
+            </div>
           </Box>
         </Fade>
       </Modal>
